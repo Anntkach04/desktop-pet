@@ -1,0 +1,128 @@
+@font-face {
+  font-family: "Pixelify Sans";
+  src: url("./node_modules/@fontsource/pixelify-sans/files/pixelify-sans-latin-400-normal.woff2")
+    format("woff2");
+  font-style: normal;
+  font-weight: 400;
+  font-display: swap;
+}
+
+:root {
+  --pet-size-h: 150px;
+  --pet-size-w: auto;
+  --sleep-size-h: 140px;
+  --bubble-width: 210px;
+  --bubble-text-top: 44px;
+  --bubble-text-left: 24px;
+  --bubble-text-right: 24px;
+  --bubble-text-size: 18px;
+  --zzz-size: 54px;
+  --zzz-top: -44px;
+  --zzz-right: -18px;
+}
+
+html,
+body {
+  margin: 0;
+  width: 100%;
+  height: 100%;
+  background: transparent;
+  overflow: hidden;
+}
+
+body {
+  user-select: none;
+  -webkit-user-select: none;
+  -webkit-app-region: no-drag;
+}
+
+#pet-root {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  background: transparent;
+}
+
+#pet-wrap {
+  position: absolute;
+  left: 230px;
+  bottom: 12px;
+  cursor: grab;
+  background: transparent;
+}
+
+#pet-wrap.dragging {
+  cursor: grabbing;
+}
+
+#pet-sprite {
+  display: block;
+  height: var(--pet-size-h);
+  width: var(--pet-size-w);
+  image-rendering: auto;
+  background: transparent;
+}
+
+#zzz-icon {
+  position: absolute;
+  width: var(--zzz-size);
+  top: var(--zzz-top);
+  right: var(--zzz-right);
+  pointer-events: none;
+  animation: zzzFloat 2.2s ease-in-out infinite;
+}
+
+@keyframes zzzFloat {
+  0% {
+    opacity: 0.3;
+    transform: translateY(8px);
+  }
+  50% {
+    opacity: 1;
+    transform: translateY(-4px);
+  }
+  100% {
+    opacity: 0.3;
+    transform: translateY(-16px);
+  }
+}
+
+#bubble-wrap {
+  position: absolute;
+  bottom: 120px;
+  left: 250px;
+  width: var(--bubble-width);
+  pointer-events: none;
+}
+
+#bubble-wrap.mirror {
+  transform: scaleX(-1);
+}
+
+#bubble-image {
+  width: 100%;
+  display: block;
+  background: transparent;
+}
+
+#bubble-text {
+  position: absolute;
+  top: var(--bubble-text-top);
+  left: var(--bubble-text-left);
+  right: var(--bubble-text-right);
+  margin: 0;
+  color: #29261f;
+  font-family: "Pixelify Sans", "Courier New", monospace;
+  font-size: var(--bubble-text-size);
+  line-height: 1.15;
+  text-align: center;
+  transform: none;
+}
+
+#bubble-wrap.mirror #bubble-text {
+  transform: scaleX(-1);
+}
+
+.hidden {
+  display: none !important;
+}
