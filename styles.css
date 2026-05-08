@@ -8,17 +8,17 @@
 }
 
 :root {
-  --pet-size-h: 150px;
+  --pet-size-h: 120px;
   --pet-size-w: auto;
-  --sleep-size-h: 140px;
-  --bubble-width: 210px;
-  --bubble-text-top: 44px;
-  --bubble-text-left: 24px;
-  --bubble-text-right: 24px;
-  --bubble-text-size: 18px;
-  --zzz-size: 54px;
-  --zzz-top: -44px;
-  --zzz-right: -18px;
+  --sleep-size-h: 112px;
+  --bubble-width: 175px;
+  --bubble-text-top: 36px;
+  --bubble-text-left: 20px;
+  --bubble-text-right: 20px;
+  --bubble-text-size: 15px;
+  --zzz-size: 42px;
+  --zzz-top: -34px;
+  --zzz-right: -12px;
 }
 
 html,
@@ -89,7 +89,7 @@ body {
 
 #bubble-wrap {
   position: absolute;
-  bottom: 120px;
+  bottom: 98px;
   left: 250px;
   width: var(--bubble-width);
   pointer-events: none;
