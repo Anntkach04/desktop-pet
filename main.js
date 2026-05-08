@@ -3,11 +3,12 @@ const { app, BrowserWindow, ipcMain, Menu, screen } = require("electron");
 
 let petWindow;
 let hiddenTimeout = null;
-let messagePreset = "30s";
-let messageIntervalMs = 30000;
+let messagePreset = "25s";
+let messageIntervalMs = 25000;
 
 const MESSAGE_OPTIONS = [
   { label: "15 seconds", preset: "15s", ms: 15000 },
+  { label: "25 seconds", preset: "25s", ms: 25000 },
   { label: "30 seconds", preset: "30s", ms: 30000 },
   { label: "60 seconds", preset: "60s", ms: 60000 },
   { label: "Off", preset: "off", ms: 0 }

@@ -24,7 +24,7 @@ const DEFAULT_MESSAGES = [
   "you are iconic, keep going"
 ];
 
-const WALK_SPEED_PX_PER_SEC = 80;
+const WALK_SPEED_PX_PER_SEC = 96;
 const SLEEP_EVERY_MS = 2 * 60 * 1000;
 const SLEEP_DURATION_MS = 60 * 1000;
 const MESSAGE_DURATION_MS = 5000;
@@ -43,9 +43,9 @@ const state = {
   isDragging: false,
   dragOffsetX: 0,
   dragOffsetY: 0,
-  messageIntervalMs: 30000,
-  messagePreset: "30s",
-  nextMessageAt: Date.now() + 30000,
+  messageIntervalMs: 25000,
+  messagePreset: "25s",
+  nextMessageAt: Date.now() + 25000,
   nextSleepAt: Date.now() + SLEEP_EVERY_MS,
   sleepUntil: 0,
   messageUntil: 0,
@@ -259,7 +259,7 @@ async function init() {
 
   state.messageIntervalMs = intervalMs;
   state.messagePreset = preset;
-  state.nextMessageAt = Date.now() + (state.messageIntervalMs || 30000);
+  state.nextMessageAt = Date.now() + (state.messageIntervalMs || 25000);
 
   await refreshBounds();
   setPetImage(PET_IMAGES.stand1);
