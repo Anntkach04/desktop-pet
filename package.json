@@ -1,0 +1,33 @@
+{
+  "name": "desktop-pet-app",
+  "version": "1.0.0",
+  "description": "Floating desktop pet built with Electron",
+  "main": "main.js",
+  "scripts": {
+    "start": "electron .",
+    "dist": "electron-builder"
+  },
+  "build": {
+    "appId": "com.example.desktoppet",
+    "productName": "DesktopPet",
+    "files": [
+      "main.js",
+      "preload.js",
+      "index.html",
+      "renderer.js",
+      "styles.css",
+      "assets/**/*"
+    ],
+    "mac": {
+      "target": "dmg",
+      "category": "public.app-category.entertainment"
+    },
+    "win": {
+      "target": "nsis"
+    }
+  },
+  "devDependencies": {
+    "electron": "^37.1.0",
+    "electron-builder": "^25.1.8"
+  }
+}

@@ -1,0 +1,136 @@
+@font-face {
+  font-family: "Pixelify Sans";
+  src: url("./assets/PixelifySans-Regular.ttf") format("truetype");
+  font-display: swap;
+}
+
+:root {
+  --pet-width: 150px;
+  --pet-height: 150px;
+  --sleep-width: 170px;
+  --sleep-height: 150px;
+  --bubble-width: 230px;
+  --bubble-height: 126px;
+  --bubble-text-top: 34px;
+  --bubble-text-left: 22px;
+  --bubble-text-width: 184px;
+  --bubble-text-height: 70px;
+  --zzz-right: 88px;
+  --zzz-bottom: 216px;
+}
+
+html,
+body {
+  width: 100%;
+  height: 100%;
+  margin: 0;
+  background: transparent;
+  overflow: hidden;
+}
+
+body {
+  user-select: none;
+  -webkit-user-select: none;
+  font-family: "Pixelify Sans", monospace;
+}
+
+#scene {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  background: transparent;
+}
+
+#pet {
+  position: absolute;
+  width: var(--pet-width);
+  height: var(--pet-height);
+  left: 130px;
+  bottom: 14px;
+  object-fit: contain;
+  image-rendering: auto;
+  background: transparent;
+}
+
+#bubbleWrap {
+  position: absolute;
+  width: var(--bubble-width);
+  height: var(--bubble-height);
+  bottom: 130px;
+  left: 170px;
+  transform-origin: center center;
+}
+
+#bubbleWrap.mirrored {
+  left: 16px;
+  transform: scaleX(-1);
+}
+
+#bubbleImage {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+  background: transparent;
+}
+
+#bubbleText {
+  position: absolute;
+  top: var(--bubble-text-top);
+  left: var(--bubble-text-left);
+  width: var(--bubble-text-width);
+  height: var(--bubble-text-height);
+  padding: 0;
+  text-align: center;
+  font-size: 18px;
+  line-height: 1.12;
+  color: #2c1a00;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  word-break: break-word;
+  text-wrap: balance;
+  transform: translateZ(0);
+}
+
+#bubbleWrap.mirrored #bubbleText {
+  transform: scaleX(-1);
+}
+
+#zzzWrap {
+  position: absolute;
+  right: var(--zzz-right);
+  bottom: var(--zzz-bottom);
+}
+
+#zzzIcon {
+  width: 62px;
+  height: auto;
+  object-fit: contain;
+  animation: zzz-float 2.3s ease-in-out infinite;
+  background: transparent;
+}
+
+.hidden {
+  display: none;
+}
+
+.sleeping #pet {
+  width: var(--sleep-width);
+  height: var(--sleep-height);
+}
+
+@keyframes zzz-float {
+  0% {
+    opacity: 0.2;
+    transform: translateY(6px) scale(0.92);
+  }
+  50% {
+    opacity: 1;
+    transform: translateY(-5px) scale(1);
+  }
+  100% {
+    opacity: 0.2;
+    transform: translateY(-16px) scale(1.06);
+  }
+}
