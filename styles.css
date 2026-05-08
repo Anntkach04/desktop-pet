@@ -1,0 +1,154 @@
+/* ============================================================
+   Base – transparent, no chrome
+   ============================================================ */
+
+/* Load Pixelify Sans locally (bundled in fonts/) */
+@font-face {
+  font-family: 'Pixelify Sans';
+  src: url('fonts/PixelifySans-Regular.ttf') format('truetype');
+  font-weight: 400;
+  font-style: normal;
+}
+@font-face {
+  font-family: 'Pixelify Sans';
+  src: url('fonts/PixelifySans-Bold.ttf') format('truetype');
+  font-weight: 700;
+  font-style: normal;
+}
+
+*, *::before, *::after {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+html, body {
+  width: 100%;
+  height: 100%;
+  background: transparent !important;
+  overflow: hidden;
+  user-select: none;
+  -webkit-user-select: none;
+}
+
+/* ============================================================
+   Scene container – fills the whole Electron window
+   ============================================================ */
+#scene {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  background: transparent;
+  overflow: visible;
+}
+
+/* ============================================================
+   Pet wrapper – positioned absolutely inside the scene
+   ============================================================ */
+#pet-wrapper {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  cursor: grab;
+  /* Size is controlled via JS / CSS variables */
+  width: var(--pet-size, 150px);
+  height: var(--pet-size, 150px);
+}
+
+#pet-wrapper:active {
+  cursor: grabbing;
+}
+
+#pet-img {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+  image-rendering: pixelated;
+  display: block;
+  /* Prevent white/black matte on transparent PNGs */
+  background: transparent;
+  mix-blend-mode: normal;
+}
+
+/* ============================================================
+   Speech bubble
+   ============================================================ */
+#bubble-container {
+  position: absolute;
+  /* positioned by JS */
+  width: var(--bubble-width, 200px);
+  height: var(--bubble-height, 120px);
+  pointer-events: none;
+}
+
+#bubble-img {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: fill;
+  display: block;
+  background: transparent;
+}
+
+#bubble-text {
+  position: absolute;
+  /* Adjust these to align text inside the bubble graphic */
+  top: var(--bubble-text-top, 22px);
+  left: var(--bubble-text-left, 16px);
+  right: var(--bubble-text-right, 16px);
+  bottom: var(--bubble-text-bottom, 28px);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  font-family: 'Pixelify Sans', 'Press Start 2P', monospace;
+  font-size: var(--bubble-font-size, 13px);
+  font-weight: 400;
+  color: #2a1a0e;
+  line-height: 1.35;
+  word-break: break-word;
+  overflow: hidden;
+  background: transparent;
+  pointer-events: none;
+}
+
+/* ============================================================
+   ZZZ icon (sleep)
+   ============================================================ */
+#zzz-container {
+  position: absolute;
+  /* positioned by JS */
+  width: var(--zzz-size, 48px);
+  height: var(--zzz-size, 48px);
+  pointer-events: none;
+  animation: zzz-float 2s ease-in-out infinite;
+}
+
+#zzz-img {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+  background: transparent;
+  display: block;
+}
+
+/* Gentle float-and-fade loop */
+@keyframes zzz-float {
+  0%   { opacity: 0;   transform: translateY(0px) scale(0.8); }
+  30%  { opacity: 1;   transform: translateY(-8px) scale(1); }
+  70%  { opacity: 0.8; transform: translateY(-16px) scale(1.05); }
+  100% { opacity: 0;   transform: translateY(-24px) scale(0.9); }
+}
+
+/* ============================================================
+   Utility
+   ============================================================ */
+.hidden {
+  display: none !important;
+}
+
+/* Flip the pet horizontally when walking left */
+.flip-x {
+  transform: scaleX(-1);
+}
