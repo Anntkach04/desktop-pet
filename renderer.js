@@ -32,7 +32,22 @@ const CONFIG = {
     "inhale, exhale, we got this",
     "your future self says thanks",
     "posture check rn",
-    "you are iconic, keep going"
+    "you are iconic, keep going",
+    "hydrate break: 3 sips now",
+    "roll your shoulders back gently",
+    "lift chest, relax your neck",
+    "water first, then continue",
+    "uncross legs and ground your feet",
+    "chin level, spine long",
+    "take a tiny posture reset",
+    "sip some water bestie",
+    "drop your shoulders away from ears",
+    "head over shoulders, not over keyboard",
+    "refill your water if it's empty",
+    "core engaged, back supported",
+    "straighten up for 10 seconds",
+    "jaw unclench check",
+    "hydration check: drink now"
   ]
 };
 
