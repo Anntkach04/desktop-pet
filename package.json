@@ -1,0 +1,36 @@
+{
+  "name": "desktop-pet-electron",
+  "version": "1.0.0",
+  "description": "Floating desktop pet app for macOS and Windows",
+  "main": "main.js",
+  "scripts": {
+    "start": "electron .",
+    "dist": "electron-builder"
+  },
+  "build": {
+    "appId": "com.cursor.desktoppet",
+    "productName": "DesktopPet",
+    "files": [
+      "**/*",
+      "!dist/**",
+      "!.git/**"
+    ],
+    "mac": {
+      "target": [
+        "dmg"
+      ]
+    },
+    "win": {
+      "target": [
+        "nsis"
+      ]
+    }
+  },
+  "dependencies": {
+    "@fontsource/pixelify-sans": "^5.2.6"
+  },
+  "devDependencies": {
+    "electron": "^37.0.0",
+    "electron-builder": "^26.0.12"
+  }
+}

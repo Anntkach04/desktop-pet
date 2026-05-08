@@ -1,0 +1,24 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Desktop Pet</title>
+    <link rel="stylesheet" href="styles.css" />
+  </head>
+  <body>
+    <main id="pet-root">
+      <div id="bubble-wrap" class="hidden">
+        <img id="bubble-image" src="assets/message.png" alt="Message bubble" draggable="false" />
+        <p id="bubble-text"></p>
+      </div>
+
+      <div id="pet-wrap" aria-label="desktop-pet" role="button" tabindex="0">
+        <img id="pet-sprite" src="assets/stand-still-1.png" alt="Pet" draggable="false" />
+        <img id="zzz-icon" class="hidden" src="assets/zzz.png" alt="Sleeping icon" draggable="false" />
+      </div>
+    </main>
+
+    <script src="renderer.js"></script>
+  </body>
+</html>
