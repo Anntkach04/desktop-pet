@@ -73,23 +73,23 @@ export async function generateSecondBrainResponse(
   }
 
   let reframe =
-    "Your brain isn’t against you — it’s trying to keep what matters safe. The swirl you feel is your mind asking for a little clarity, not proof that you’ve failed.";
+    "Part of you can already touch the feeling you’re chasing — not because the goal is done, but because the care behind it is real. Your mind is rehearsing importance, not failure.";
 
   if (/\b(behind|late|too old|everyone else)\b/.test(t)) {
     reframe =
-      "You’re not behind — you’re building something that actually means something to you. Timelines look neat from the outside; yours can still be real and yours.";
+      "You can already feel the pull toward something meaningful — that’s why “behind” stings. The feeling isn’t proof you’re late; it’s proof you’re invested, and investment counts before the finish line.";
   } else if (/\b(fear|scared|afraid|worry)\b/.test(t)) {
     reframe =
-      "This fear is awkward, but it also shows you care about the outcome. Caring is loud sometimes. It doesn’t mean something is wrong with you.";
+      "You can already feel how much this matters — fear is clumsy, but it often shows up when something feels important. Caring isn’t the same as being broken.";
   } else if (/\b(compare|instagram|everyone)\b/.test(t)) {
     reframe =
-      "Comparison steals the nuance of your own path. You’re allowed to move at a pace that fits your life — not a highlight reel.";
+      "You can already feel the gap between your real life and a highlight reel — that honesty is a kind of clarity. You don’t need to win the comparison to be allowed to move at your pace.";
   } else if (/\b(overwhelm|too much|stuck)\b/.test(t)) {
     reframe =
-      "When everything feels loud, your brain is asking for smaller steps — not a heroic fix tonight. One gentle move still counts.";
+      "You can already feel that something needs to shift — overwhelm is noisy, but it’s also information. Smaller steps aren’t a downgrade; they’re how your nervous system says yes.";
   } else if (/\b(goal|dream|build|start)\b/.test(t)) {
     reframe =
-      "Wanting more for yourself is tender, not greedy. You can want things and still be kind to yourself while you build them.";
+      "You can already feel the tenderness of wanting more — that’s not greed, it’s direction. Wanting is allowed before you have proof you “deserve” the outcome.";
   }
 
   const snippet =
@@ -115,6 +115,6 @@ export async function generateSecondBrainResponse(
   return {
     feelings,
     reframe,
-    actions: actions.slice(0, 5),
+    actions: actions.slice(0, 4),
   };
 }

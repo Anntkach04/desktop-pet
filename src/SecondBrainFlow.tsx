@@ -32,6 +32,7 @@ export function SecondBrainFlow() {
   const [input, setInput] = useState("");
   const [busy, setBusy] = useState(false);
   const [feelings, setFeelings] = useState<string[]>([]);
+  const [feelingsSelected, setFeelingsSelected] = useState<boolean[]>([]);
   const [reframe, setReframe] = useState("");
   const [actions, setActions] = useState<string[]>([]);
   const [checked, setChecked] = useState<Record<number, boolean>>({});
@@ -39,10 +40,18 @@ export function SecondBrainFlow() {
 
   const canActivate = input.trim().length > 0;
 
+  const activeFeelings = useMemo(
+    () => feelings.filter((_, i) => feelingsSelected[i]),
+    [feelings, feelingsSelected],
+  );
+
+  const canContinueFromFeelings = activeFeelings.length > 0;
+
   const resetAll = useCallback(() => {
     setStep(1);
     setInput("");
     setFeelings([]);
+    setFeelingsSelected([]);
     setReframe("");
     setActions([]);
     setChecked({});
@@ -56,6 +65,7 @@ export function SecondBrainFlow() {
     try {
       const res = await generateSecondBrainResponse(input);
       setFeelings(res.feelings);
+      setFeelingsSelected(res.feelings.map(() => true));
       setReframe(res.reframe);
       setActions(res.actions);
       setChecked({});
@@ -67,25 +77,25 @@ export function SecondBrainFlow() {
 
   const notesText = useMemo(() => {
     const lines = [
-      "Second Brain notes",
+      "How to rewire your brain — daily checklist",
       "—",
-      "Original thought:",
+      "Goals (what I wrote):",
       input.trim() || "(empty)",
       "",
-      "Feelings detected:",
-      feelings.map((f) => `• ${f}`).join("\n"),
+      "Feelings I’m amplifying:",
+      activeFeelings.length ? activeFeelings.map((f) => `• ${f}`).join("\n") : "(none selected)",
       "",
-      "Reframe:",
+      "Why I can already feel this way:",
       reframe,
       "",
-      "Tiny next steps:",
+      "Four things today to feel it now:",
       ...actions.map((a, i) => {
         const mark = checked[i] ? "[x]" : "[ ]";
         return `${mark} ${a}`;
       }),
     ];
     return lines.join("\n");
-  }, [input, feelings, reframe, actions, checked]);
+  }, [input, activeFeelings, reframe, actions, checked]);
 
   const copyNotes = async () => {
     try {
@@ -96,7 +106,7 @@ export function SecondBrainFlow() {
   };
 
   const downloadImage = async () => {
-    const el = document.getElementById("second-brain-export-card");
+    const el = document.getElementById("rewire-export-card");
     if (!el) return;
     setExportBusy(true);
     try {
@@ -106,7 +116,7 @@ export function SecondBrainFlow() {
         logging: false,
       });
       const link = document.createElement("a");
-      link.download = "second-brain-notes.png";
+      link.download = "rewire-brain-notes.png";
       link.href = canvas.toDataURL("image/png");
       link.click();
     } finally {
@@ -118,15 +128,26 @@ export function SecondBrainFlow() {
     setChecked((c) => ({ ...c, [i]: !c[i] }));
   };
 
+  const toggleFeeling = (i: number) => {
+    setFeelingsSelected((prev) => {
+      const next = [...prev];
+      if (!next.length) return prev;
+      next[i] = !next[i];
+      return next;
+    });
+  };
+
   const positions = tagPositions(feelings.length);
 
   return (
     <PhoneShell>
       <header className="mb-6 text-center">
-        <p className="font-display text-2xl font-semibold text-cocoa sm:text-[1.65rem]">
-          Second Brain
+        <p className="font-display text-[1.45rem] font-semibold leading-tight text-cocoa sm:text-[1.65rem]">
+          How to rewire your brain
         </p>
-        <p className="mt-1 text-sm text-cocoa-soft/90">Turn messy thoughts into clarity.</p>
+        <p className="mt-1.5 text-sm leading-snug text-cocoa-soft/90">
+          Goals first. Then the feelings behind them — tiny actions you can paste into your notes.
+        </p>
         <div
           className="mx-auto mt-4 flex max-w-[200px] justify-center gap-1.5"
           aria-hidden
@@ -163,21 +184,22 @@ export function SecondBrainFlow() {
                 Step 1
               </p>
               <h1 className="mt-2 text-center font-display text-2xl text-cocoa sm:text-[1.85rem]">
-                Write what’s on your mind
+                Write your goals first
               </h1>
               <p className="mx-auto mt-2 max-w-[280px] text-center text-sm leading-relaxed text-cocoa-soft">
-                Goals, fears, worries, overthinking — whatever feels loud right now.
+                Just goals for now — not the feelings yet. What are you aiming at, chasing, or trying to
+                make real?
               </p>
 
               <div className="mt-5 flex flex-1 flex-col items-center">
                 <GlowingBrainIcon />
                 <label className="mt-4 w-full text-left text-xs font-medium text-cocoa/60">
-                  Your thoughts
+                  Your goals
                   <textarea
                     value={input}
                     onChange={(e) => setInput(e.target.value)}
                     rows={5}
-                    placeholder="Start typing…"
+                    placeholder="e.g. save money, launch the project, feel steadier in my work…"
                     className={[
                       "mt-2 w-full resize-none rounded-[1.25rem] rounded-br-[1.45rem] rounded-tl-[1.1rem]",
                       "border-[1.5px] border-cocoa/15 bg-cream/80 px-4 py-3",
@@ -190,10 +212,10 @@ export function SecondBrainFlow() {
 
               <div className="mt-auto space-y-3 pt-6">
                 <MagicButton disabled={!canActivate || busy} onClick={runActivate}>
-                  {busy ? "Activating…" : "Activate my brain"}
+                  {busy ? "Rewiring…" : "Rewire this goal"}
                 </MagicButton>
                 <p className="text-center text-[11px] text-cocoa/45">
-                  A small ritual — not a substitute for care you deserve offline.
+                  A journaling ritual — not medical advice. Skip anything that doesn’t feel true for you.
                 </p>
               </div>
             </motion.div>
@@ -213,20 +235,23 @@ export function SecondBrainFlow() {
                 Step 2
               </p>
               <h1 className="mt-2 text-center font-display text-2xl text-cocoa sm:text-[1.85rem]">
-                Feelings behind them
+                Feelings behind your goals
               </h1>
               <p className="mx-auto mt-2 max-w-[280px] text-center text-sm text-cocoa-soft">
-                Little labels your mind might be carrying — no judgment, just pattern.
+                We rarely want the thing — we want how we think it&apos;ll feel. Tap tags to choose what
+                lands; only checked ones go in your export.
               </p>
 
-              <div className="relative mt-8 flex min-h-[220px] flex-1 items-center justify-center">
-                <p className="relative z-0 max-w-[200px] text-center font-display text-xl text-cocoa/85">
-                  feelings behind them
+              <div className="relative mt-6 flex min-h-[220px] flex-1 items-center justify-center">
+                <p className="relative z-0 max-w-[220px] text-center font-display text-lg leading-snug text-cocoa/80">
+                  Which feelings are hiding in this goal?
                 </p>
                 {feelings.map((f, i) => {
                   const p = positions[i] ?? { x: 0, y: 0, rotate: 0 };
+                  const on = !!feelingsSelected[i];
                   return (
-                    <motion.span
+                    <motion.button
+                      type="button"
                       key={`${f}-${i}`}
                       initial={{ opacity: 0, scale: 0.55 }}
                       animate={{
@@ -242,24 +267,33 @@ export function SecondBrainFlow() {
                         stiffness: 260,
                         damping: 18,
                       }}
-                      className="pointer-events-none absolute left-1/2 top-1/2 z-10"
+                      onClick={() => toggleFeeling(i)}
+                      className="absolute left-1/2 top-1/2 z-10 cursor-pointer outline-none focus-visible:ring-2 focus-visible:ring-amber-400/90"
                     >
                       <span
                         className={[
-                          "inline-block whitespace-nowrap rounded-full rounded-br-lg rounded-tl-md",
-                          "border border-cocoa/18 bg-butter/90 px-3 py-1",
-                          "text-xs font-semibold capitalize text-cocoa shadow-sm",
+                          "inline-block whitespace-nowrap rounded-full rounded-br-lg rounded-tl-md px-3 py-1",
+                          "border text-xs font-semibold capitalize shadow-sm transition-colors",
+                          on
+                            ? "border-cocoa/25 bg-butter/95 text-cocoa ring-1 ring-amber-300/50"
+                            : "scale-95 border-cocoa/10 bg-cream/70 text-cocoa/40 opacity-70",
                         ].join(" ")}
                       >
                         {f}
                       </span>
-                    </motion.span>
+                    </motion.button>
                   );
                 })}
               </div>
 
-              <div className="mt-auto pt-6">
-                <MagicButton onClick={() => setStep(3)}>Show me what my brain sees</MagicButton>
+              <p className="mt-2 text-center text-[11px] text-cocoa/45">
+                Pick at least one feeling to continue.
+              </p>
+
+              <div className="mt-auto pt-4">
+                <MagicButton disabled={!canContinueFromFeelings} onClick={() => setStep(3)}>
+                  Why I can already feel this way
+                </MagicButton>
               </div>
             </motion.div>
           )}
@@ -278,10 +312,11 @@ export function SecondBrainFlow() {
                 Step 3
               </p>
               <h1 className="mt-2 text-center font-display text-2xl text-cocoa sm:text-[1.85rem]">
-                What your second brain sees
+                Why you can already feel this way
               </h1>
               <p className="mx-auto mt-2 max-w-[280px] text-center text-sm text-cocoa-soft">
-                Softer truth — not forced sunshine, just steadier ground.
+                Reasons your mind can soften — not hype, just a steadier read on what&apos;s already
+                true.
               </p>
 
               <motion.div
@@ -296,7 +331,7 @@ export function SecondBrainFlow() {
               </motion.div>
 
               <div className="mt-auto pt-6">
-                <MagicButton onClick={() => setStep(4)}>Turn this into a plan</MagicButton>
+                <MagicButton onClick={() => setStep(4)}>Four things for today</MagicButton>
               </div>
             </motion.div>
           )}
@@ -315,10 +350,10 @@ export function SecondBrainFlow() {
                 Step 4
               </p>
               <h1 className="mt-2 text-center font-display text-2xl text-cocoa sm:text-[1.85rem]">
-                Tiny things to do next
+                Four things to do today to feel it now
               </h1>
               <p className="mx-auto mt-2 max-w-[280px] text-center text-sm text-cocoa-soft">
-                Small moves you can actually try — not a whole life overhaul.
+                Small moves that stack — paste the checklist into your notes app when you&apos;re done.
               </p>
 
               <ul className="mt-6 flex flex-1 flex-col gap-3">
@@ -353,7 +388,7 @@ export function SecondBrainFlow() {
               </ul>
 
               <div className="mt-auto pt-6">
-                <MagicButton onClick={() => setStep(5)}>Create my notes</MagicButton>
+                <MagicButton onClick={() => setStep(5)}>Create my daily checklist</MagicButton>
               </div>
             </motion.div>
           )}
@@ -372,10 +407,10 @@ export function SecondBrainFlow() {
                 Step 5
               </p>
               <h1 className="mt-2 text-center font-display text-2xl text-cocoa sm:text-[1.85rem]">
-                Your second brain notes
+                Your notes-ready checklist
               </h1>
               <p className="mx-auto mt-2 max-w-[280px] text-center text-sm text-cocoa-soft">
-                A tidy little snapshot you can keep.
+                Copy into Apple Notes, Notion, or wherever you keep tiny promises to yourself.
               </p>
 
               <motion.div
@@ -384,32 +419,36 @@ export function SecondBrainFlow() {
                 transition={{ type: "spring", stiffness: 120, damping: 16 }}
                 className="mt-5 flex-1 overflow-y-auto"
               >
-                <DoodleCard id="second-brain-export-card" className="space-y-5 p-5">
+                <DoodleCard id="rewire-export-card" className="space-y-5 p-5">
                   <section>
-                    <h2 className="font-display text-lg text-cocoa">Original thought</h2>
+                    <h2 className="font-display text-lg text-cocoa">Goals (what I wrote)</h2>
                     <p className="mt-1 whitespace-pre-wrap text-[14px] leading-relaxed text-ink">
                       {input.trim() || "—"}
                     </p>
                   </section>
                   <section>
-                    <h2 className="font-display text-lg text-cocoa">Feelings detected</h2>
+                    <h2 className="font-display text-lg text-cocoa">Feelings I&apos;m amplifying</h2>
                     <div className="mt-2 flex flex-wrap gap-2">
-                      {feelings.map((f) => (
-                        <span
-                          key={f}
-                          className="rounded-full rounded-br-md bg-honey/80 px-2.5 py-0.5 text-xs font-semibold capitalize text-cocoa"
-                        >
-                          {f}
-                        </span>
-                      ))}
+                      {activeFeelings.length ? (
+                        activeFeelings.map((f, i) => (
+                          <span
+                            key={`${f}-${i}`}
+                            className="rounded-full rounded-br-md bg-honey/80 px-2.5 py-0.5 text-xs font-semibold capitalize text-cocoa"
+                          >
+                            {f}
+                          </span>
+                        ))
+                      ) : (
+                        <span className="text-sm text-cocoa-soft">—</span>
+                      )}
                     </div>
                   </section>
                   <section>
-                    <h2 className="font-display text-lg text-cocoa">Reframe</h2>
+                    <h2 className="font-display text-lg text-cocoa">Why I can already feel this way</h2>
                     <p className="mt-1 text-[14px] leading-relaxed text-ink">{reframe}</p>
                   </section>
                   <section>
-                    <h2 className="font-display text-lg text-cocoa">Tiny next steps</h2>
+                    <h2 className="font-display text-lg text-cocoa">Four things today</h2>
                     <ul className="mt-2 space-y-2">
                       {actions.map((a, i) => (
                         <li key={i} className="flex gap-2 text-[14px] leading-snug text-ink">
@@ -433,7 +472,7 @@ export function SecondBrainFlow() {
                     onClick={copyNotes}
                     className="rounded-[1rem] rounded-br-[1.2rem] border-[1.5px] border-cocoa/18 bg-cream/90 py-3 text-sm font-semibold text-cocoa transition hover:bg-cream"
                   >
-                    Copy notes
+                    Copy checklist
                   </button>
                   <button
                     type="button"
