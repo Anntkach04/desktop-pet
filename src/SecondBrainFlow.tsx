@@ -244,7 +244,7 @@ export function SecondBrainFlow() {
 
               <div className="relative mt-6 flex min-h-[220px] flex-1 items-center justify-center">
                 <p className="relative z-0 max-w-[220px] text-center font-display text-lg leading-snug text-cocoa/80">
-                  Which feelings are hiding in this goal?
+                  brain loop
                 </p>
                 {feelings.map((f, i) => {
                   const p = positions[i] ?? { x: 0, y: 0, rotate: 0 };
