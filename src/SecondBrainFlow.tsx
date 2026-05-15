@@ -169,6 +169,28 @@ export function SecondBrainFlow() {
       </header>
 
       <div className="relative flex flex-1 flex-col">
+        <AnimatePresence>
+          {busy ? (
+            <motion.div
+              key="rewiring-overlay"
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              exit={{ opacity: 0 }}
+              transition={{ duration: 0.2 }}
+              className="absolute inset-0 z-30 flex flex-col items-center justify-center rounded-2xl bg-warm-white/90 backdrop-blur-[2px]"
+              aria-live="polite"
+              aria-busy="true"
+            >
+              <motion.p
+                className="font-display text-3xl tracking-wide text-cocoa"
+                animate={{ opacity: [0.55, 1, 0.55] }}
+                transition={{ duration: 1.6, repeat: Infinity, ease: "easeInOut" }}
+              >
+                rewiring
+              </motion.p>
+            </motion.div>
+          ) : null}
+        </AnimatePresence>
         <AnimatePresence mode="wait">
           {step === 1 && (
             <motion.div
@@ -212,7 +234,7 @@ export function SecondBrainFlow() {
 
               <div className="mt-auto space-y-3 pt-6">
                 <MagicButton disabled={!canActivate || busy} onClick={runActivate}>
-                  {busy ? "Rewiring…" : "Rewire this goal"}
+                  {busy ? "rewiring" : "Rewire this goal"}
                 </MagicButton>
                 <p className="text-center text-[11px] text-cocoa/45">
                   A journaling ritual — not medical advice. Skip anything that doesn’t feel true for you.
