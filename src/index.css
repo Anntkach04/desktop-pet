@@ -1,0 +1,69 @@
+@import "tailwindcss";
+
+@theme {
+  --font-display: "Caveat", cursive;
+  --font-body: "Nunito", system-ui, sans-serif;
+  --color-cream: #fdf8ee;
+  --color-cream-deep: #f5ecd8;
+  --color-warm-white: #fffef9;
+  --color-sand: #e8dcc4;
+  --color-honey: #f4e4a6;
+  --color-butter: #fcefb4;
+  --color-cocoa: #5c4033;
+  --color-cocoa-soft: #7a5c4e;
+  --color-ink: #3d2f28;
+  --color-moss: #6b7f5a;
+}
+
+html {
+  font-family: var(--font-body);
+  background: var(--color-cream);
+  color: var(--color-ink);
+}
+
+body {
+  margin: 0;
+  min-height: 100dvh;
+  -webkit-font-smoothing: antialiased;
+}
+
+#root {
+  min-height: 100dvh;
+}
+
+@keyframes brain-glow-pulse {
+  0%,
+  100% {
+    filter: drop-shadow(0 0 12px rgba(252, 211, 77, 0.55))
+      drop-shadow(0 0 28px rgba(251, 191, 36, 0.35));
+    opacity: 1;
+  }
+  50% {
+    filter: drop-shadow(0 0 20px rgba(252, 211, 77, 0.75))
+      drop-shadow(0 0 40px rgba(245, 158, 11, 0.45));
+    opacity: 0.95;
+  }
+}
+
+@keyframes ray-rotate {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+.brain-glow {
+  animation: brain-glow-pulse 3.5s ease-in-out infinite;
+}
+
+.rays-slow {
+  animation: ray-rotate 48s linear infinite;
+}
+
+.doodle-shadow {
+  box-shadow:
+    2px 3px 0 rgba(92, 64, 51, 0.06),
+    4px 8px 24px rgba(92, 64, 51, 0.08);
+}
